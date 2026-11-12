@@ -5,7 +5,7 @@ public class Isosceles extends Triangulo {
     public Isosceles(double ladoIgual, double base) {
         super(ladoIgual, ladoIgual, base);
 
-        if (!esValido() || ladoIgual == base) {
+        if (ladoIgual == base) {
             throw new IllegalArgumentException("Esto no es un triángulo válido, inténtalo de nuevo.");
         }
     }
@@ -22,13 +22,11 @@ public class Isosceles extends Triangulo {
     // Setters
     @Override
     public void setLado1(double lado) {
-        if (lado <= 0 || lado == getLado3() ||
-                lado + lado <= getLado3()) {
+        if (lado == getLado3()) {
             throw new IllegalArgumentException("Esto no es un triángulo válido, inténtalo de nuevo.");
         }
 
-        super.setLado1(lado);
-        super.setLado2(lado);
+        actualizarLados(lado, lado, getLado3());
     }
 
     @Override
@@ -38,12 +36,11 @@ public class Isosceles extends Triangulo {
 
     @Override
     public void setLado3(double base) {
-        if (base <= 0 || base == getLado1() ||
-                base >= getLado1() + getLado2()) {
+        if (base == getLado1()) {
             throw new IllegalArgumentException("Esto no es un triángulo válido, inténtalo de nuevo.");
         }
 
-        super.setLado3(base);
+        actualizarLados(getLado1(), getLado2(), base);
     }
 
     // toString()

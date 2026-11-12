@@ -7,9 +7,24 @@ public class Rombo extends Figura {
     // Métodos
     // Constructor
     public Rombo(double lado, double diagonalMayor, double diagonalMenor) {
+        validarDimensiones(lado, diagonalMayor, diagonalMenor);
+
         this.lado = lado;
         this.diagonalMayor = diagonalMayor;
         this.diagonalMenor = diagonalMenor;
+    }
+
+    private void validarDimensiones(double lado, double diagonalMayor, double diagonalMenor) {
+        if (!Double.isFinite(lado) ||
+                !Double.isFinite(diagonalMayor) ||
+                !Double.isFinite(diagonalMenor) ||
+                lado <= 0 ||
+                diagonalMayor <= 0 ||
+                diagonalMenor <= 0 ||
+                diagonalMayor < diagonalMenor ||
+                Math.abs(lado - Math.hypot(diagonalMayor / 2, diagonalMenor / 2)) > 0.000001) {
+            throw new IllegalArgumentException("Las dimensiones del rombo no son válidas.");
+        }
     }
 
     @Override
@@ -36,29 +51,55 @@ public class Rombo extends Figura {
     public double getLado() {
         return lado;
     }
+
     public double getDiagonalMayor() {
         return diagonalMayor;
     }
+
     public double getDiagonalMenor() {
         return diagonalMenor;
     }
 
     // Setters
     public void setLado(double lado) {
+        validarDimensiones(lado, diagonalMayor, diagonalMenor);
         this.lado = lado;
     }
+
     public void setDiagonalMayor(double diagonalMayor) {
+        validarDimensiones(lado, diagonalMayor, diagonalMenor);
         this.diagonalMayor = diagonalMayor;
     }
+
     public void setDiagonalMenor(double diagonalMenor) {
+        validarDimensiones(lado, diagonalMayor, diagonalMenor);
         this.diagonalMenor = diagonalMenor;
     }
 
     // equals()
-    public boolean equals(Rombo rombo) {
-        return this.lado == rombo.lado &&
-                this.diagonalMayor == rombo.diagonalMayor &&
-                this.diagonalMenor == rombo.diagonalMenor;
+    @Override
+    public boolean equals(Object objeto) {
+        if (this == objeto) {
+            return true;
+        }
+
+        if (objeto == null || getClass() != objeto.getClass()) {
+            return false;
+        }
+
+        Rombo rombo = (Rombo) objeto;
+
+        return Double.compare(this.lado, rombo.lado) == 0 &&
+                Double.compare(this.diagonalMayor, rombo.diagonalMayor) == 0 &&
+                Double.compare(this.diagonalMenor, rombo.diagonalMenor) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int resultado = Double.hashCode(lado);
+        resultado = 31 * resultado + Double.hashCode(diagonalMayor);
+        resultado = 31 * resultado + Double.hashCode(diagonalMenor);
+        return resultado;
     }
 
     // toString()
@@ -70,5 +111,4 @@ public class Rombo extends Figura {
                 "\nPerímetro: " + calcularPerimetro() +
                 "\nÁrea: " + calcularArea() + "\n";
     }
-
 }

@@ -1,10 +1,11 @@
 public class Circulo extends Figura {
     // Atributos
     private double radio;
+
     // Métodos
     // Constructor
     public Circulo(double radio) {
-        this.radio = radio;
+        setRadio(radio);
     }
 
     @Override
@@ -32,19 +33,38 @@ public class Circulo extends Figura {
 
     // Setters
     public void setRadio(double radio) {
+        if (radio <= 0 || !Double.isFinite(radio)) {
+            throw new IllegalArgumentException("El radio debe ser mayor que cero.");
+        }
+
         this.radio = radio;
     }
 
     // equals()
-    public boolean equals(Circulo circulo) {
-        return this.radio == circulo.radio;
+    @Override
+    public boolean equals(Object objeto) {
+        if (this == objeto) {
+            return true;
+        }
+
+        if (!(objeto instanceof Circulo)) {
+            return false;
+        }
+
+        Circulo circulo = (Circulo) objeto;
+        return Double.compare(this.radio, circulo.radio) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Double.hashCode(radio);
     }
 
     // toString()
     @Override
     public String toString() {
-        return "Radio: " + radio + "\nPerímetro: " + calcularPerimetro() +
+        return "Radio: " + radio +
+                "\nPerímetro: " + calcularPerimetro() +
                 "\nÁrea: " + calcularArea() + "\n";
     }
-
 }
